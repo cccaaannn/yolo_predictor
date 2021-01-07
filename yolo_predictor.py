@@ -42,7 +42,7 @@ class yolo_predictor():
         pred_bbox = infer(tf.constant(np.asarray([image_data]).astype(np.float32)))
 
         # cuting bbox and confidences
-        # example shape for coco  pred_bbox=(1, 25, 84) boxes=(1, 25, 4) pred_conf=(1, 25, 80)  25 predictions form 80 classes before non max supression 
+        # example shape for coco  pred_bbox=(1, 25, 84) boxes=(1, 25, 4) pred_conf=(1, 25, 80)  25 predictions form 80 classes before non max suppression 
         boxes = list(pred_bbox.values())[0][:, :, 0:4]
         pred_conf = list(pred_bbox.values())[0][:, :, 4:]
 
@@ -56,6 +56,7 @@ class yolo_predictor():
             score_threshold=score_threshold
         )
 
+        # convert tensors to numpy arrays
         boxes = boxes.numpy()
         scores = scores.numpy()
         classes = classes.numpy()
