@@ -16,8 +16,8 @@ class yolo_predictor():
     def __load_class_names(self, names_path):
         self.names = {}
         with open(names_path, 'r') as data:
-            for ID, name in enumerate(data):
-                self.names[ID] = name.strip('\n')
+            for index, name in enumerate(data):
+                self.names[index] = name.strip('\n')
 
     def __load_image(self, image_path, image_size):
         image = cv2.imread(image_path)
@@ -28,10 +28,13 @@ class yolo_predictor():
 
         return image_data
 
-    def detect(self, image_path: str, image_size: int=416, iou_threshold: float=0.45, score_threshold: float=0.25, max_output_size_per_class: int=50, max_total_size: int=50):
+
+    def predict(self, image_path, image_size=416, iou_threshold=0.45, score_threshold=0.25, max_output_size_per_class=50, max_total_size=50):
         """
+        Predicts images with tensorflow converted darknet yolov4 model.
+
         Returns:
-        A list of this tuple (class, confidence, (x, y, w, h))
+        A list of this tuple (class_name, class_index, confidence, (x, y, w, h))
         """
 
         # load image
@@ -82,10 +85,13 @@ class yolo_predictor():
             predictions.append(
                 (
                     self.names[classes[0][i]],  # class name
+                    int(classes[0][i]),         # class index
                     scores[0][i],               # confidence
                     (cx,cy,w,h)                 # bbox
                 )
             )
 
         return predictions
+
+
 
