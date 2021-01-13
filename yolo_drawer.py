@@ -1,7 +1,7 @@
 import numpy as np
+import random
 import cv2
 import os
-import random
 
 class yolo_drawer():
     def __init__(self, random_seed_start_point=42):
@@ -23,6 +23,9 @@ class yolo_drawer():
         Draws bounding boxes of predicted images.
 
         Predictions has to be in this format (class_name, class_index, confidence, (x, y, w, h))
+
+        Returns:
+        opencv image object
         """
 
         # read image
@@ -72,3 +75,5 @@ class yolo_drawer():
             cv2.imshow(image_path, image)
             cv2.waitKey()
             cv2.destroyAllWindows()
+
+        return image
