@@ -56,13 +56,20 @@ model_path = "model_files/yolov4_coco"
 names_path = "model_files/coco.names"
 image_path = "test_images/dog.jpg"
 
+# init model
 predictor = yolo_predictor(model_path, names_path)
 
+# predict
 predictions = predictor.detect(image_path)
 print(predictions)
 
+# draw image
 drawer = yolo_drawer()
-drawer.draw(predictions, image_path, show=True, resize=False)
+image = drawer.draw(predictions, image_path, show=False, resize=False)
+
+import cv2
+cv2.imshow("Predicted", image)
+cv2.waitKey()
 ```
 
 ### Output
