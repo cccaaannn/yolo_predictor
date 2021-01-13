@@ -1,6 +1,12 @@
-import os
-import time
 import argparse
+import logging
+import time
+import os
+
+
+# logger
+logging.basicConfig(level=logging.INFO, format="[Predictor %(levelname)s] %(message)s", handlers=[logging.StreamHandler()])
+logging.addLevelName(25, "Result")
 
 
 # argparse type functions
@@ -51,17 +57,17 @@ args = parser.parse_args()
 
 
 
-print("\n[Starting tensorflow]")
+logging.info("Starting tensorflow")
 from yolo_predictor import yolo_predictor
 from yolo_drawer import yolo_drawer
 
 
-print("[Loading model]")
+logging.info("Loading model")
 predictor = yolo_predictor(args.model_path, args.names_path)
 drawer = yolo_drawer()
 
 
-print("[Prediction started]\n")
+logging.info("Prediction started\n\n")
 # simgel image
 if(args.image_path):
     # predict
@@ -71,10 +77,8 @@ if(args.image_path):
 
     current_prediction_time = end - start
 
-    # print
-    print("Image: {0}".format(args.image_path))
-    print("Prediction: {0}".format(predictions))
-    print("Time: {0:.2f}s\n".format(float(current_prediction_time)))
+    # log result
+    logging.log(25, "\nImage: {0}\nPrediction: {1}\nTime: {2:.2f}s\n".format(image_full_path, predictions, current_prediction_time))
 
     # draw
     if(args.show or args.save_folder):
@@ -95,15 +99,13 @@ if(args.dir_path):
             current_prediction_time = end - start
             total_time += current_prediction_time
 
-            # print
-            print("Image: {0}".format(image_full_path))
-            print("Prediction: {0}".format(predictions))
-            print("Time: {0:.2f}s\n".format(float(current_prediction_time)))
+            # log result
+            logging.log(25, "\nImage: {0}\nPrediction: {1}\nTime: {2:.2f}s\n".format(image_full_path, predictions, current_prediction_time))
 
             # draw
             if(args.show or args.save_folder):
                 drawer.draw(predictions, image_full_path, show = args.show, resize = args.resize, save_folder_path = args.save_folder, saved_file_suffix = args.suffix)
         except:
-            print("File '{0}' caused error skipping.\n".format(image_full_path))
+            logging.warning("File '{0}' caused error skipping.\n".format(image_full_path))
 
-    print("Total time: {0:.2f}s\n".format(float(total_time)))
+    logging.info("Total time: {0:.2f}s\n".format(float(total_time)))
