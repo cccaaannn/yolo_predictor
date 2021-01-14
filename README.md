@@ -52,7 +52,7 @@ Draw arguments:
 from yolo_predictor import yolo_predictor
 from yolo_drawer import yolo_drawer
 
-model_path = "model_files/yolov4_coco"
+model_path = "model_files/yolov4_coco.weights"
 names_path = "model_files/coco.names"
 image_path = "test_images/dog.jpg"
 
@@ -60,15 +60,15 @@ image_path = "test_images/dog.jpg"
 predictor = yolo_predictor(model_path, names_path)
 
 # predict
-predictions = predictor.detect(image_path)
+predictions = predictor.predict(image_path)
 print(predictions)
 
 # draw image
 drawer = yolo_drawer()
-image = drawer.draw(predictions, image_path, show=False, resize=False)
+image, save_path = drawer.draw(predictions, image_path, show=False, resize=False, save_folder_path="test_results")
 
 import cv2
-cv2.imshow("Predicted", image)
+cv2.imshow("Predicted " + save_path, image)
 cv2.waitKey()
 ```
 
