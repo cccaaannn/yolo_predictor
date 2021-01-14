@@ -25,7 +25,10 @@ class yolo_drawer():
         Predictions has to be in this format (class_name, class_index, confidence, (x, y, w, h))
 
         Returns:
-        opencv image object
+
+        if save path provided: opencv image object and save path (image, save_path)
+
+        else (image, None)
         """
 
         # read image
@@ -55,6 +58,7 @@ class yolo_drawer():
             cv2.putText(image, "{0} %{1}".format(name, confidence), (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1, color=color, thickness=2)
 
         # save image
+        save_path = None
         if(save_folder_path):
             # make the dir if not exists
             if not os.path.exists(save_folder_path):
@@ -76,4 +80,4 @@ class yolo_drawer():
             cv2.waitKey()
             cv2.destroyAllWindows()
 
-        return image
+        return image, save_path
