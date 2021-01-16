@@ -78,7 +78,7 @@ if(args.image_path):
     current_prediction_time = end - start
 
     # log result
-    logging.log(25, "\nImage: {0}\nPrediction: {1}\nTime: {2:.2f}s\n".format(image_full_path, predictions, current_prediction_time))
+    logging.log(25, "\nImage: {0}\nPrediction: {1}\nTime: {2:.2f}s\n".format(args.image_path, predictions, current_prediction_time))
 
     # draw
     if(args.show or args.save_folder):
